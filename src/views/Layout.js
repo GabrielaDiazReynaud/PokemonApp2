@@ -30,45 +30,91 @@ function Layout({ children }) {
    * @param {boolean} firstPokemon  [firstPokemon=false] - Indicates if this is the first fetch to display initial Pokémon.
    * @returns {void}
    */
-  const getAllPokemons = function (firstPokemon) {
+  // const getAllPokemons = function (firstPokemon) {
+  //   if (isFetching.current) return;
+  //   isFetching.current = true;
+  //   axios
+  //     .get(
+  //       `https://pokeapi.co/api/v2/pokemon?offset=${offset.current}&limit=${20}`
+  //     )
+  //     .then((response) => {
+  //       let pokemonsTmp = [...response?.data?.results];
+  //       if (pokemonsTmp.length !== 0) {
+  //         let promises = pokemonsTmp.map((pokemon) => {
+  //           return axios.get(pokemon.url).then((response) => {
+  //             pokemon.name =
+  //               pokemon?.name.charAt(0).toUpperCase() + pokemon?.name.slice(1);
+  //             pokemon.id = response?.data?.id;
+  //             pokemon.abilities = response?.data?.abilities;
+  //             pokemon.types = response?.data?.types;
+  //             pokemon.sprite =
+  //               response?.data?.sprites?.other?.home?.front_default;
+  //             return axios.get(response.data.species.url).then((resp) => {
+  //               pokemon.generation = resp?.data?.generation.name;
+  //             });
+  //           });
+  //         });
+  //         Promise.all(promises).then(() => {
+  //           if (firstPokemon) {
+  //             setPokemonOnDisplay([...pokemonsTmp]);
+  //             onDisplay.current = 20;
+  //           }
+  //           offset.current += 20;
+  //           setPokemons((prevPokemons) => [...prevPokemons, ...pokemonsTmp]);
+  //           isFetching.current = false;
+  //           console.log(pokemonsTmp);
+  //         });
+  //       } else {
+  //         setLoading(false);
+  //         isFetching.current = false;
+  //       }
+  //     });
+  // };
+  const getAllPokemons = async function (firstPokemon) {
     if (isFetching.current) return;
     isFetching.current = true;
-    axios
-      .get(
-        `https://pokeapi.co/api/v2/pokemon?offset=${offset.current}&limit=${20}`
-      )
-      .then((response) => {
-        let pokemonsTmp = [...response?.data?.results];
-        if (pokemonsTmp.length !== 0) {
-          let promises = pokemonsTmp.map((pokemon) => {
-            return axios.get(pokemon.url).then((response) => {
-              pokemon.name =
-                pokemon?.name.charAt(0).toUpperCase() + pokemon?.name.slice(1);
-              pokemon.id = response?.data?.id;
-              pokemon.abilities = response?.data?.abilities;
-              pokemon.types = response?.data?.types;
-              pokemon.sprite =
-                response?.data?.sprites?.other?.home?.front_default;
-              return axios.get(response.data.species.url).then((resp) => {
-                pokemon.generation = resp?.data?.generation.name;
-              });
-            });
-          });
-          Promise.all(promises).then(() => {
-            if (firstPokemon) {
-              setPokemonOnDisplay([...pokemonsTmp]);
-              onDisplay.current = 20;
-            }
-            offset.current += 20;
-            setPokemons((prevPokemons) => [...prevPokemons, ...pokemonsTmp]);
-            isFetching.current = false;
-            console.log(pokemonsTmp);
-          });
-        } else {
-          setLoading(false);
-          isFetching.current = false;
+
+    try {
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon?offset=${offset.current}&limit=20`
+      );
+      let pokemonsTmp = [...response?.data?.results];
+
+      if (pokemonsTmp.length !== 0) {
+        const promises = pokemonsTmp.map(async (pokemon) => {
+          try {
+            const pokemonData = await axios.get(pokemon.url);
+            pokemon.name =
+              pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+            pokemon.id = pokemonData.data.id;
+            pokemon.abilities = pokemonData.data.abilities;
+            pokemon.types = pokemonData.data.types;
+            pokemon.sprite = pokemonData.data.sprites.other.home.front_default;
+
+            const speciesData = await axios.get(pokemonData.data.species.url);
+            pokemon.generation = speciesData.data.generation.name;
+          } catch (error) {
+            console.error(`Error fetching data for ${pokemon.name}:`, error);
+          }
+        });
+
+        await Promise.all(promises);
+
+        if (firstPokemon) {
+          setPokemonOnDisplay([...pokemonsTmp]);
+          onDisplay.current = 20;
         }
-      });
+        offset.current += 20;
+        setPokemons((prevPokemons) => [...prevPokemons, ...pokemonsTmp]);
+        console.log(pokemonsTmp);
+      } else {
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    } finally {
+      isFetching.current = false;
+    }
   };
 
   /**
