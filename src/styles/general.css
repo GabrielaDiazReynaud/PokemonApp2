@@ -1,0 +1,35 @@
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: "Sunflower", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+.home-container {
+  padding-top: 4rem;
+}
+.card-display {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 2rem;
+  max-width: 100rem;
+  margin: 0 auto;
+  column-gap: 2rem;
+}
+
+.load-button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.poketitle {
+  width: 20rem;
+  margin-bottom: 2rem;
+}
+
+.progress-container {
+  text-align: center;
+}

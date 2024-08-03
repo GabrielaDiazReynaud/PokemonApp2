@@ -1,0 +1,42 @@
+.search-container {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.input-container {
+  position: relative;
+}
+.poke-searchinput {
+  padding: 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  box-sizing: border-box;
+  border: 0.2px solid rgb(223, 223, 223);
+  border-radius: 2rem;
+  width: 50%;
+  min-width: 20rem;
+  max-width: 100%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  margin-bottom: 1rem;
+}
+.select-input {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 2rem !important;
+}
+.filter-input {
+  border-radius: 2rem !important;
+}
+
+.filter-input-label {
+  font-family: inherit !important;
+}
+.MuiOutlinedInput-notchedOutline legend {
+  font-size: 14px;
+}
+
+.filter-btn {
+  margin-top: 1rem !important;
+}

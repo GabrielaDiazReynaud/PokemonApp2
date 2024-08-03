@@ -1,0 +1,25 @@
+.error-container {
+  padding: 2rem;
+  background-image: linear-gradient(to bottom right, #fdfcfb, #eeeded);
+  border-radius: 2rem;
+  margin-bottom: 2rem;
+}
+.error-img {
+  width: 6rem;
+  display: inline-block;
+}
+.error {
+  text-align: center;
+}
+
+.error > p {
+  font-size: 7rem;
+  display: inline;
+}
+
+.error-title {
+  font-family: inherit;
+  font-size: 2rem;
+  margin-top: 1px;
+  text-align: center;
+}

@@ -1,0 +1,16 @@
+.navbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 4rem;
+  background-color: rgba(227, 228, 228, 0.7);
+  /* filter: blur(4px); */
+  z-index: 2000;
+  text-align: center;
+}
+.pokelogo {
+  margin: 0 auto;
+  position: relative;
+  bottom: -1.2rem;
+  width: 5rem;
+}
